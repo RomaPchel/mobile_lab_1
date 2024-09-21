@@ -42,8 +42,8 @@ fun FuelCalculator(modifier: Modifier = Modifier) {
     var w by remember { mutableStateOf("") }
     var a by remember { mutableStateOf("") }
 
-    val kRs by remember { mutableStateOf("") }
-    val kRg by remember { mutableStateOf("") }
+    var kRs by remember { mutableStateOf(0.0) }
+    var kRg by remember { mutableStateOf(0.0) }
     var dryComposition by remember { mutableStateOf("") }
     var flammableComposition by remember { mutableStateOf("") }
     var lowerHeatingValue by remember { mutableStateOf("") }
@@ -128,8 +128,8 @@ fun FuelCalculator(modifier: Modifier = Modifier) {
                 val wValue = w.toDoubleOrNull() ?: 0.0
                 val aValue = a.toDoubleOrNull() ?: 0.0
 
-                var kRs = 100 / (100 - wValue)
-                var kRg = 100 / (100 - wValue - aValue)
+                kRs = 100 / (100 - wValue)
+                kRg = 100 / (100 - wValue - aValue)
 
                 val hC = hValue * kRs
                 val cC = cValue * kRs
@@ -152,6 +152,7 @@ fun FuelCalculator(modifier: Modifier = Modifier) {
 
                 kRs = String.format("%.2f", kRs).toDouble()
                 kRg = String.format("%.2f", kRg).toDouble()
+
                 dryComposition = "HС: ${String.format("%.2f", hC)}%, CС: ${String.format("%.2f", cC)}%, SС: ${String.format("%.2f", sC)}%, NС: ${String.format("%.3f", nC)}%, OС: ${String.format("%.2f", oC)}%, AС: ${String.format("%.2f", aC)}%"
                 flammableComposition = "HГ: ${String.format("%.2f", hG)}%, CГ: ${String.format("%.2f", cG)}%, SГ: ${String.format("%.2f", sG)}%, NГ: ${String.format("%.3f", nG)}%, OГ: ${String.format("%.2f", oG)}%"
                 lowerHeatingValue = String.format("%.4f", qRnMj)
@@ -173,14 +174,18 @@ fun FuelCalculator(modifier: Modifier = Modifier) {
             Text("Calculate")
         }
 
-        Text("Коефіцієнт переходу від робочої до сухої маси: $kRs")
-        Text("Коефіцієнт переходу від робочої до горючої маси: $kRg")
+        println(kRs)
+        println(kRg)
+
+        Text("Коефіцієнт переходу від робочої до сухої маси: ${String.format("%.2f", kRs)}")
+        Text("Коефіцієнт переходу від робочої до горючої маси: ${String.format("%.2f", kRg)}")
         Text("Склад сухої маси: $dryComposition")
         Text("Склад горючої маси: $flammableComposition")
         Text("Нижча теплота згоряння для робочої маси: $lowerHeatingValue МДж/кг")
         Text("Нижча теплота згоряння для сухої маси: $lowerHeatingValueDry МДж/кг")
         Text("Нижча теплота згоряння для горючої маси: $lowerHeatingValueFlammable МДж/кг")
         Text("Сума відсотків: $percentageSum%")
+
     }
 }
 
