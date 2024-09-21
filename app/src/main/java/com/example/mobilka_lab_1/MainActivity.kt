@@ -49,6 +49,7 @@ fun FuelCalculator(modifier: Modifier = Modifier) {
     var lowerHeatingValue by remember { mutableStateOf("") }
     var lowerHeatingValueDry by remember { mutableStateOf("") }
     var lowerHeatingValueFlammable by remember { mutableStateOf("") }
+    var percentageSum by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.padding(16.dp)) {
         Text("Fuel Composition Calculator")
@@ -156,7 +157,17 @@ fun FuelCalculator(modifier: Modifier = Modifier) {
                 lowerHeatingValue = String.format("%.4f", qRnMj)
                 lowerHeatingValueDry = String.format("%.4f", qDry / 1000)
                 lowerHeatingValueFlammable = String.format("%.4f", qFlammable / 1000)
-            },
+                percentageSum = calculatePercentageSum(
+                    hValue,
+                    cValue,
+                    sValue,
+                    nValue,
+                    oValue,
+                    wValue,
+                    aValue
+                )
+                percentageSum = String.format("%.2f", percentageSum.toDouble())
+                      },
             modifier = Modifier.padding(vertical = 16.dp)
         ) {
             Text("Calculate")
@@ -169,6 +180,7 @@ fun FuelCalculator(modifier: Modifier = Modifier) {
         Text("Нижча теплота згоряння для робочої маси: $lowerHeatingValue МДж/кг")
         Text("Нижча теплота згоряння для сухої маси: $lowerHeatingValueDry МДж/кг")
         Text("Нижча теплота згоряння для горючої маси: $lowerHeatingValueFlammable МДж/кг")
+        Text("Сума відсотків: $percentageSum%")
     }
 }
 
@@ -281,6 +293,9 @@ fun FuelOilCalculator(modifier: Modifier = Modifier) {
     }
 }
 
+fun calculatePercentageSum(h: Double, c: Double, s: Double, n: Double, o: Double, w: Double, a: Double): String {
+    return (h + c + s + n + o + w + a).toString()
+}
 
 @Preview(showBackground = true)
 @Composable
